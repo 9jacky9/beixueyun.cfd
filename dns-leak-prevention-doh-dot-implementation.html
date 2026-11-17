@@ -1,110 +1,91 @@
 <!DOCTYPE html>
+
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>在线白板与思维导图：加载慢与同步冲突的处理 - 贝雪云破晓视界</title>
-  <meta name="description" content="使用在线白板和思维导图协作时加载慢、内容不同步？介绍网络稳定、文件拆分、离线备份与冲突处理的做法。">
-  <link rel="stylesheet" href="style.css">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DNS设置怎么查：系统解析、浏览器DoH与代理解析的分工</title>
+<meta content="按系统配置、浏览器加密DNS与客户端解析路径逐层检查，提供Windows查询命令和Firefox设置位置，解释检测结果的适用范围。" name="description"/>
+<link href="style.css" rel="stylesheet"/>
 </head>
 <body>
-
-  <header class="horizon-header">
-    <div class="horizon-header-inner">
-      <a href="index.html" class="logo-link" aria-label="贝雪云首页">
-        <svg width="130" height="42" viewBox="0 0 130 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="nautilusSunHub" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#fbbf24"/>
-              <stop offset="50%" stop-color="#f97316"/>
-              <stop offset="100%" stop-color="#ea580c"/>
-            </linearGradient>
-            <linearGradient id="warmTextGradHub" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#ffffff"/>
-              <stop offset="100%" stop-color="#fef08a"/>
-            </linearGradient>
-          </defs>
-          <path d="M4 22C4 11 13 4 24 4C35 4 44 11 44 22C44 31 37 38 28 38C19 38 14 31 14 24C14 18 19 14 24 14C29 14 32 17 32 21C32 24 30 26 27 26C24 26 22 24 22 22" stroke="url(#nautilusSunHub)" stroke-width="2.4" stroke-linecap="round"/>
-          <path d="M24 1V4M41 8L39 10M45 22H42M39 34L37 32" stroke="#fbbf24" stroke-width="1.8" stroke-linecap="round"/>
-          <text x="52" y="29" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="900" fill="url(#warmTextGradHub)" letter-spacing="1">贝雪云</text>
-        </svg>
-      </a>
-      <ul class="cfd-nav-menu">
-        <li><a href="index.html#features">全域加速</a></li>
-        <li><a href="index.html#media-ai">生态兼容</a></li>
-        <li><a href="index.html#pricing">方案价格</a></li>
-        <li><a href="index.html#faq">常见问题</a></li>
-        <li><a href="journal.html" class="active">破晓视界</a></li>
-      </ul>
-      <div class="cfd-nav-cta">
-        <a href="https://ww012.twilightaff.com/#/?code=A56DH1Af" class="btn-dawn-primary" rel="nofollow" target="_blank">进入控制台</a>
+<header class="horizon-header">
+<div class="horizon-header-inner">
+<a aria-label="贝雪云首页" class="logo-link" href="index.html">
+<svg fill="none" height="42" viewbox="0 0 130 42" width="130" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<lineargradient id="nautilusSunHub" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#fbbf24"></stop>
+<stop offset="50%" stop-color="#f97316"></stop>
+<stop offset="100%" stop-color="#ea580c"></stop>
+</lineargradient>
+<lineargradient id="warmTextGradHub" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" stop-color="#ffffff"></stop>
+<stop offset="100%" stop-color="#fef08a"></stop>
+</lineargradient>
+</defs>
+<path d="M4 22C4 11 13 4 24 4C35 4 44 11 44 22C44 31 37 38 28 38C19 38 14 31 14 24C14 18 19 14 24 14C29 14 32 17 32 21C32 24 30 26 27 26C24 26 22 24 22 22" stroke="url(#nautilusSunHub)" stroke-linecap="round" stroke-width="2.4"></path>
+<path d="M24 1V4M41 8L39 10M45 22H42M39 34L37 32" stroke="#fbbf24" stroke-linecap="round" stroke-width="1.8"></path>
+<text fill="url(#warmTextGradHub)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="900" letter-spacing="1" x="52" y="29">贝雪云</text>
+</svg>
+</a>
+<ul class="cfd-nav-menu">
+<li><a href="index.html#features">全域加速</a></li>
+<li><a href="index.html#media-ai">生态兼容</a></li>
+<li><a href="index.html#pricing">方案价格</a></li>
+<li><a href="index.html#faq">常见问题</a></li>
+<li><a class="active" href="journal.html">破晓视界</a></li>
+</ul>
+<div class="cfd-nav-cta">
+<a class="btn-dawn-primary" href="https://ww012.twilightaff.com/#/?code=A56DH1Af" rel="nofollow" target="_blank">进入控制台</a>
+</div>
+</div>
+</header>
+<main class="cfd-main">
+<div class="subpage-plate">
+<nav aria-label="面包屑导航" class="breadcrumbs-nav">
+<a href="index.html">首页</a>
+<span class="breadcrumbs-sep">/</span>
+<a href="journal.html">破晓视界</a>
+<span class="breadcrumbs-sep">/</span>
+<span>正文</span>
+</nav>
+<header class="article-header">
+<div class="insight-meta-row">
+<span class="journal-badge">协作工具</span>
+<span class="insight-date">2026-11-13</span>
+</div>
+<h1 class="article-headline">DNS设置怎么查：系统解析、浏览器DoH与代理解析的分工</h1>
+<div class="article-meta-bar">
+<span>作者：贝雪云使用手记</span>
+<span>·</span>
+<span>专栏：贝雪云 · 破晓视界</span>
+<span>·</span>
+<span>阅读时间：约 5 分钟</span>
+</div>
+</header>
+<article class="article-body"><div data-swc-article-body="2026-11-16"><h2>先确定你想保护和修复的是什么</h2><p>DNS负责把域名解析成连接所需的信息，但网站打不开不一定就是解析故障。有人关注查询是否加密，有人需要访问公司内网，也有人只是遇到某个域名突然无法解析。这三种目标可能要求不同设置。先写出失败的域名、使用的应用和预期解析方式，再排查系统、浏览器与连接客户端，避免三处一起改动后无法解释结果。</p><h2>第一层，读取系统正在使用的设置</h2><p>Windows终端可运行<code>ipconfig /all</code>，在当前连接的适配器中查看DNS服务器，而不是只看最上方的虚拟网卡。随后执行<code>nslookup 目标域名</code>，记录响应服务器和查询结果。这里查询到的是系统相关路径，不代表所有浏览器都会用相同解析器。测试目标选择自己正常需要访问的公开域名，不用含私人信息的长地址。</p><h2>第二层，分清缓存与新的查询</h2><p>微软的DNS故障文档提供<code>ipconfig /displaydns</code>用于查看本地缓存。域名刚改变解析时，缓存可能让你暂时看到旧结果；先记录内容，再判断是否需要用<code>ipconfig /flushdns</code>清理系统缓存。清理只影响相应本地状态，不能强迫全球解析器立即更新，也不一定清掉浏览器或客户端自己的缓存。执行后重新查询，比较实际变化。</p><h2>第三层，确认浏览器有没有独立解析</h2><p>Firefox可从设置进入“隐私与安全”，找到DNS over HTTPS区域查看保护状态与提供方，当前界面可能在高级设置中显示更多选项。操作顺序是一，截图记录原状态；二，确认提供方和失败时行为；三，用同一公开域名测试网页，再观察是否出现安全DNS不可用提示。工作设备受组织管理时，设置可能由策略控制，应遵从既定要求。</p><h2>DoH和DoT改变的是传输方式</h2><p>DoH通过HTTPS承载DNS查询，DoT使用TLS保护相应查询连接，但是否使用、由谁解析、失败后怎样回退，仍取决于具体实现。加密查询不等于所有上网信息都消失，也不代表你不再需要信任解析服务。选择提供方时看其公开说明与适用条件，不能只因名字听起来安全就把全部设备一起切过去。</p><h2>第四层，检查连接客户端的解析策略</h2><p>部分客户端会按规则决定由本地或远端解析，另一些应用可能自行解析。先查看当前配置中与DNS、路由和模式相关的选项，记录原值。不要把陌生配置整段覆盖到现有文件，也不要认为全局代理必然覆盖全部解析。比较<a href="https://dajichang.mom/">支持日常浏览的机场套餐</a>时，也要核对解析配置与使用指南；真正的检查标准是实际路径是否符合自己的设置。</p><h2>检测网站结果应怎样阅读</h2><p>检测通常显示它观察到的解析出口或相关信息，不一定能完整反映设备全部应用行为。先记录检测时间、浏览器和当前连接状态，再分别在正常模式与对照模式下复测。出现不认识的运营商名称，不足以单独证明恶意行为；提供方可能使用其他网络资源。反过来，检测通过也不能证明所有软件都没有绕开预期路径。</p><h2>公司内网与家庭设备需要兼顾</h2><p>公司内部域名、打印机名称或本地服务器可能依赖特定解析。把浏览器强制指向外部解析器后，公共网站正常而内部服务失败，并不奇怪。应由管理员安排必要的分域规则，或恢复符合组织要求的配置。家庭环境也先验证路由器管理页、打印与其他常用服务，确认更改没有破坏原本正常的访问。</p><h2>用一张三行表保留结果</h2><p>表格分别写系统、浏览器、连接客户端，每行记录设置位置、当前提供方或策略、查询结果和是否与预期一致。只在其中一层做一次修改，再复测目标网站及正常对照网站。如果问题没有改善，恢复原值后继续下一层。这样的记录可以避免系统配置已恢复，浏览器却仍保留另一套设置的常见混乱。</p><h2>哪些异常不能继续靠换DNS处理</h2><p>证书名称不匹配、登录权限不足、网页返回服务器错误，通常需要进一步检查对应环节。不要因为解析器返回地址，就认定网站一定安全；也不要为了让页面打开而关闭证书验证。若多个独立网络都解析失败，可以核对域名或联系站点维护方。准确区分解析、连接和应用错误，能够减少不必要的设置变化。</p><h2>完成后验证日常工作而非只看检测页</h2><p>重新打开常用网页、工作应用与本地服务，确认都按预期运行，并删除已经无用的临时测试设置。保留原配置和本次有效改动，系统或客户端更新后再检查关键路径。DNS隐私与可用性需要持续核对，不能把一次测试结果写成永久“零泄漏”承诺。一个简单验收顺序是先查公开域名，再打开常用网站，最后测试公司或家庭内部名称；三项都正常后才把配置记为有效。若某一项失败，就保留原结果并回到对应层检查。</p></div></article>
+<div class="article-callout" style="margin-top: 40px;">
+<h4>贝雪云技术团队提示</h4>
+<p>本文由贝雪云技术研发与网络工程实验室原创撰写，探讨现代跨境专线与传输层协议前沿工程实践。了解更多网络加速与全球节点动态，请持续关注【破晓视界】专栏。</p>
+</div>
+<div style="margin-top: 30px; text-align: center;">
+<a class="journal-read-more" href="journal.html" style="font-size: 15px;">← 返回【破晓视界】专栏目录</a>
+</div>
+</div>
+</main>
+<footer class="dawn-footer-modular">
+<div class="footer-cfd-inner">
+<ul class="cfd-four-links">
+<li><a href="sitemap.html">网站地图</a></li>
+<li><a href="about.html">关于我们</a></li>
+<li><a href="terms.html">服务条款</a></li>
+<li><a href="privacy.html">隐私政策</a></li>
+</ul>
+<div class="cfd-copy-note">
+        © 2026 贝雪云 保留所有权利
       </div>
-      </div>
-  </header>
-
-  <main class="cfd-main">
-    <div class="subpage-plate">
-      <nav class="breadcrumbs-nav" aria-label="面包屑导航">
-        <a href="index.html">首页</a>
-        <span class="breadcrumbs-sep">/</span>
-        <a href="journal.html">破晓视界</a>
-        <span class="breadcrumbs-sep">/</span>
-        <span>正文</span>
-      </nav>
-
-      <header class="article-header">
-        <div class="insight-meta-row">
-          <span class="journal-badge">协作工具</span>
-          <span class="insight-date">2026-11-13</span>
-        </div>
-        <h1 class="article-headline">在线白板与思维导图：加载慢与同步冲突的处理</h1>
-        <div class="article-meta-bar">
- <span>作者：贝雪云使用手记</span>
- <span>&middot;</span>
- <span>专栏：贝雪云 &middot; 破晓视界</span>
- <span>&middot;</span>
- <span>阅读时间：约 5 分钟</span>
- </div>
-      </header>
-
-      <article class="article-body">
-<p>在线白板方便头脑风暴，但画布一大就容易卡顿，多人编辑还可能产生冲突。</p>
-<h2>一、加载慢的原因</h2>
-<p>画布包含大量图片与元素，首次加载需要下载大量资源。网络波动时，进度会明显变慢。</p>
-<h2>二、让它更快</h2>
-<ul><li>把大画布拆成多个页面或文件。</li><li>压缩插入的图片。</li><li>会议前先打开并预加载。</li></ul>
-<h2>三、同步冲突</h2>
-<p>多人同时修改同一对象，可能出现覆盖。约定分区编辑，使用评论代替直接修改，必要时查看版本历史。</p>
-<h2>四、网络与浏览器</h2>
-<p>固定一个稳定的节点，使用较新的浏览器并清理缓存，必要时换用桌面版客户端。</p>
-<h2>五、备份习惯</h2>
-<p>重要的画布定期导出为图片或文件保存，防止意外丢失。</p>
- </article>
-
-      <div class="article-callout" style="margin-top: 40px;">
-        <h4>贝雪云技术团队提示</h4>
-        <p>本文由贝雪云技术研发与网络工程实验室原创撰写，探讨现代跨境专线与传输层协议前沿工程实践。了解更多网络加速与全球节点动态，请持续关注【破晓视界】专栏。</p>
-      </div>
-
-      <div style="margin-top: 30px; text-align: center;">
-        <a href="journal.html" class="journal-read-more" style="font-size: 15px;">&larr; 返回【破晓视界】专栏目录</a>
-      </div>
-    </div>
-  </main>
-
-  <footer class="dawn-footer-modular">
-    <div class="footer-cfd-inner">
-      <ul class="cfd-four-links">
-        <li><a href="sitemap.html">网站地图</a></li>
-        <li><a href="about.html">关于我们</a></li>
-        <li><a href="terms.html">服务条款</a></li>
-        <li><a href="privacy.html">隐私政策</a></li>
-      </ul>
-      <div class="cfd-copy-note">
-        &copy; 2026 贝雪云 保留所有权利
-      </div>
-    </div>
-  </footer>
-
+</div>
+</footer>
 </body>
 </html>
